@@ -5,6 +5,8 @@ urlpatterns = [
     path('contact', views.contact,name='contact'),
     path('search', views.search,name='search'),
     path('signup', views.handleSignUp, name="handleSignUp"),
+    path('login', views.handeLogin, name="handleLogin"),
+    path('logout', views.handelLogout, name="handleLogout"),
     
     
 ]
