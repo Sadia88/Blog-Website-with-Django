@@ -1,7 +1,8 @@
-from django.shortcuts import render, HttpResponse,redirect
+from django.shortcuts import render, HttpResponse,redirect,HttpResponseRedirect
 from .models import Post, BlogComment
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 def blogHome(request): 
     allPosts= Post.objects.all()
@@ -15,7 +16,8 @@ def blogPost(request, slug):
     context={"post":post}
     return render(request, "blog/blogPost.html", context)
 
-
+def blogComment(request):
+    return redirect(request,"blog/blogPost.html")
 
 
 
@@ -39,3 +41,13 @@ def blogPost(request, slug):
     comments= BlogComment.objects.filter(post=post)
     context={'post':post, 'comments': comments, 'user': request.user}
     return render(request, "blog/blogPost.html", context)
+
+
+def delete(request, id):
+    comment = BlogComment.objects.filter(sno=id)
+    comment.delete()
+    # return redirect("blog/blogPost.html")
+    # return HttpResponseRedirect("blog/blogPost.html")
+    return HttpResponseRedirect(reverse('blogHome'))
+    # return render(request, "blog/blogPost.html")
+    
