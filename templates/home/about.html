@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %} About Writer {% endblock title %}
+{% block aboutactive %} active {% endblock aboutactive %} 
+
+
+{% block body %}
+
+
+
+<div class="container ">
+    <div class="row">
+      <div class="col-8 mt-4 mr-5 ">
+        <table  class="table table-dark table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col" colspan="3">About</th>
+                <th scope="col" >Action</th>
+              </tr>
+            </thead>
+            <tbody>
+             {% for about in allAbout  %}
+             <tr>
+                <th scope="row">{{about.id}}</th>
+                <td>{{about.name}}</td>
+                <td>{{about.email}}</td>
+                <td colspan="5">{{about.about}}</td>
+                <td ><input class="btn btn-danger" data-sid="{{about.id}}" type="button" value="Delete">
+                    <input class="btn btn-primary" data-sid="{{about.id}}" type="submit" value="Edit">
+                
+                </td>
+              </tr>
+             {% endfor %}
+             
+            
+            </tbody>
+          </table>
+      </div>
+      <div class="col">
+        <div class='container mt-5 border-dark border border-2 shadow-lg'>
+            <form >
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label" >Email address</label>
+                    <input type="email" class="form-control" name='email' id='emailid' placeholder="name@example.com">
+                  </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label" >Name</label>
+                    <input type="name" class="form-control" name='name' id='nameid' placeholder="Author Name">
+                  </div>
+                <div>
+                    <input type="hidden" value='writer' name='status' id='statusid'>
+                </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">About Author</label>
+                    <textarea class="form-control" id='aboutid' name='about' rows="3"></textarea>
+                  </div>
+                  <input class="btn btn-primary w-100 m-2" type="submit" id='postbtn' value="Post">
+            </form>
+        </div>
+      </div>
+    </div>
+   
+  </div>
+   
+ 
+ {% endblock %}
+
+ {%block js%} 
+ 
+    
+   {% include "home/aboutAjax.html"  %}
+ 
+    
+{%endblock%}
+ 

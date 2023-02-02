@@ -1,0 +1,25 @@
+<script>
+    $("#postbtn").on( "click", function(  ) {
+        email=$('#emailid').val()
+        name=$('#nameid').val()
+        about=$('#aboutid').val()
+        csr=$('input[name=csrfmiddlewaretoken']).val() //for security purpose
+        if(email=='' || about=='' ||  name==''  ){
+            alert('Please fill the from correctly')
+        }
+        else{
+            mydata={name: name, email:email, about:about,csrfmiddlewaretoken:csr}
+            $.ajax({
+                {% comment %} url: "/api/getWeather", {% endcomment %}
+
+                url: "{% url 'about' %}",
+                method:"POST",
+                data: mydata,
+                success: function(data) {
+                    console.log(data)
+                 ;
+                }
+              });
+        }
+       });
+</script>

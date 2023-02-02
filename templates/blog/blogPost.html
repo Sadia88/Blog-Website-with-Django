@@ -13,7 +13,7 @@
   <h2> Comments ({{comments.count}})</h2>
     <div class="my-2">
       {% if user.is_authenticated %}
-    <h1>{{user.is_authenticated}}</h1>
+ 
       <form action="/blog/postComment" method="post">
           {% csrf_token %}
           <div class="form-group">

@@ -11,3 +11,13 @@ class Contact(models.Model):
      
      def __str__(self):
         return "Message from "+self.email +' - ' +self.name
+class About(models.Model):
+   
+     name= models.CharField(max_length=255)
+     email= models.CharField(max_length=100)
+     status= models.CharField(max_length=100,default='writer')
+     about= models.TextField()
+     timeStamp=models.DateTimeField(auto_now_add=True, blank=True)
+     
+     def __str__(self):
+        return "About of  "+self.email +' - ' +self.name

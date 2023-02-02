@@ -17,6 +17,7 @@ def blogPost(request, slug):
     return render(request, "blog/blogPost.html", context)
 
 def blogComment(request):
+    
     return redirect(request,"blog/blogPost.html")
 
 

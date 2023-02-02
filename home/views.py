@@ -1,14 +1,30 @@
 from django.shortcuts import render,redirect, HttpResponse
-from home.models import Contact
+from home.models import Contact,About
 from blog.models import Post
 from django.contrib import messages
 from django.contrib.auth.models import User 
 from django.contrib.auth  import authenticate,  login, logout
 import json
+
 # Create your views here.
 def home(request):
  
    return render(request, 'home/home.html')
+
+def ajax(request):
+
+    return render(request,"home/ajax.html")
+
+def about(request):
+    allAbout= About.objects.all()
+    if request.method=="POST":
+        name=request.POST['name']
+        email=request.POST['email']
+        about =request.POST['about']
+        author=About(name= name, email=email, about=about)
+        author.save()
+    allAbout={"allAbout": allAbout}
+    return render(request,"home/about.html",allAbout)
 
 
 def contact(request):
