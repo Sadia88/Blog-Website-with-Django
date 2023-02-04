@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User 
 from django.contrib.auth  import authenticate,  login, logout
 import json
+from django.http import JsonResponse
 
 # Create your views here.
 def home(request):
@@ -17,14 +18,47 @@ def ajax(request):
 
 def about(request):
     allAbout= About.objects.all()
+    # for e in About.objects.all():
+    #     print(e)
+    a=list(allAbout)
+    print(allAbout)
     if request.method=="POST":
+        authorId=request.POST['authorId']
         name=request.POST['name']
         email=request.POST['email']
         about =request.POST['about']
-        author=About(name= name, email=email, about=about)
+        if(authorId==''):
+             author=About(name= name, email=email, about=about)
+             
+        else:
+         author=About(id=authorId,name= name, email=email, about=about)
+
         author.save()
+        # below 3 line is for corverting data into json formate
+        a=About.objects.values()
+        allAbout=list(a)
+        # print(allAbout)
+        print({'allAbout': allAbout})
+        return JsonResponse({'allAbout': allAbout})
     allAbout={"allAbout": allAbout}
     return render(request,"home/about.html",allAbout)
+
+def delete(request):
+    if request.method=="POST":
+        id=request.POST.get('sid')
+        delPost= About.objects.get(pk=id)
+        delPost.delete()
+        return JsonResponse({"status":1})
+    else:
+        return JsonResponse({"status":0})
+def edit(request):
+    if request.method=="POST":
+        id=request.POST.get('sid')
+        editPost= About.objects.get(pk=id)
+        editData={'id': editPost.id,'email':editPost.email,'name':editPost.name,'about':editPost.about}
+        return JsonResponse(editData)
+  
+        
 
 
 def contact(request):

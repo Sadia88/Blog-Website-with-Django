@@ -1,25 +1,93 @@
 <script>
-    $("#postbtn").on( "click", function(  ) {
+    //insert data
+    $("#postbtn").on( "click", function(e) {
+        result=''
+        authorId=$('#authorId').val()
         email=$('#emailid').val()
         name=$('#nameid').val()
         about=$('#aboutid').val()
-        csr=$('input[name=csrfmiddlewaretoken']).val() //for security purpose
+
+        csr=$('input[name=csrfmiddlewaretoken]').val() 
         if(email=='' || about=='' ||  name==''  ){
             alert('Please fill the from correctly')
         }
         else{
-            mydata={name: name, email:email, about:about,csrfmiddlewaretoken:csr}
+            mydata={authorId:authorId, name: name, email:email, about:about,csrfmiddlewaretoken:csr}
+            {% comment %} console.log(mydata) {% endcomment %}
+            e.preventDefault();
             $.ajax({
-                {% comment %} url: "/api/getWeather", {% endcomment %}
 
                 url: "{% url 'about' %}",
                 method:"POST",
                 data: mydata,
-                success: function(data) {
-                    console.log(data)
-                 ;
+                dataType:'json',
+                success: function(data) { 
+                    x=data.allAbout
+                    console.log(x)
+                    {% comment %} console.log(data.allAbout[0].name) {% endcomment %}
+                    for(i=0; i<x.length;i++)
+                    { 
+                        result += "<tr> <th scope='row'> "+x[i].id+" </th><td>"+x[i].name+"</td><td>"+x[i].email+" </td><td colspan='5'>"
+                       +x[i].about+"</td><td ><input class='btn btn-danger btnDelete' data-sid=" +x[i].id+" type='button' value='Delete'> <input class='btn btn-primary btnEdit' data-sid=" +x[i].id+ " type='submit' value='Edit'></td></tr>"
+                       
+                    }
+                $('#tbody').html(result)
+                $('#form')[0].reset()
                 }
               });
         }
        });
+
+
+       //delete data
+
+       $('tbody').on('click','.btnDelete',function(){
+        id=$(this).attr('data-sid')
+        csr=$('input[name=csrfmiddlewaretoken]').val() 
+        mydata={sid:id,csrfmiddlewaretoken:csr}
+        mythis=this
+        $.ajax({
+            url: "{% url 'delete' %}",
+            method:"POST",
+            data: mydata, 
+            success: function(data) {
+                if(data.status==1)
+               { 
+                $(mythis).closest('tr').fadeOut();
+                alert('delete successfully')
+            }
+                if(data.status==0){
+                    alert('Unable to delete ')
+                }
+
+                
+            }
+        })
+
+       })
+
+    //Edit button
+
+    $('tbody').on('click','.btnEdit',function(){
+        id=$(this).attr('data-sid')
+        csr=$('input[name=csrfmiddlewaretoken]').val() 
+        mydata={sid:id,csrfmiddlewaretoken:csr}
+        
+        $.ajax({
+            url: "{% url 'edit' %}",
+            method:"POST",
+            data: mydata, 
+            success: function(data) {
+               {% comment %} console.log(data) {% endcomment %}
+
+               $('#authorId').val(data.id)
+               $('#emailid').val(data.email)
+               $('#nameid').val(data.name)
+               $('#aboutid').val(data.about)
+                
+            }
+        })
+
+       })
+
 </script>

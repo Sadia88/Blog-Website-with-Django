@@ -21,18 +21,19 @@
                 <th scope="col" >Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id='tbody'>
              {% for about in allAbout  %}
-             <tr>
+             <tr >
                 <th scope="row">{{about.id}}</th>
                 <td>{{about.name}}</td>
                 <td>{{about.email}}</td>
                 <td colspan="5">{{about.about}}</td>
-                <td ><input class="btn btn-danger" data-sid="{{about.id}}" type="button" value="Delete">
-                    <input class="btn btn-primary" data-sid="{{about.id}}" type="submit" value="Edit">
+                <td ><input class="btn btn-danger btnDelete" data-sid="{{about.id}}" type="button" value="Delete">
+                    <input class="btn btn-primary btnEdit" data-sid="{{about.id}}" type="submit" value="Edit">
                 
                 </td>
               </tr>
+            
              {% endfor %}
              
             
@@ -41,8 +42,9 @@
       </div>
       <div class="col">
         <div class='container mt-5 border-dark border border-2 shadow-lg'>
-            <form >
+            <form id='form' >
                 {% csrf_token %}
+                <input type="hidden"  name='authorId' id='authorId'>
                 <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label" >Email address</label>
                     <input type="email" class="form-control" name='email' id='emailid' placeholder="name@example.com">
@@ -52,13 +54,13 @@
                     <input type="name" class="form-control" name='name' id='nameid' placeholder="Author Name">
                   </div>
                 <div>
-                    <input type="hidden" value='writer' name='status' id='statusid'>
+                    
                 </div>
                   <div class="mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">About Author</label>
                     <textarea class="form-control" id='aboutid' name='about' rows="3"></textarea>
                   </div>
-                  <input class="btn btn-primary w-100 m-2" type="submit" id='postbtn' value="Post">
+                  <input class="btn btn-primary w-100 m-2" id='postbtn' value="Post">
             </form>
         </div>
       </div>
